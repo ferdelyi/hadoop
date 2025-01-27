@@ -1,0 +1,40 @@
+
+<div class="row">
+  <div class="col-md-12 container-fluid">
+    <div class="panel panel-default queue-page-breadcrumb" id="partition-usage-container">
+      <div class="panel-heading">
+        {{model.firstObject.type}} scheduler - Partition usage overview
+     </div>
+     <div class="flex">
+        {{log module.exports}}
+        {{#if (eq model.firstObject.type "capacity")}}
+
+        <table class="table table-striped table-bordered active-user-table">
+          <thead>
+            <tr>
+              <th>Partition Name</th>
+              <th>Resource Used from the Partition</th>
+              <th>Total Resource in the Partition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="display: none">
+            </tr>
+            {{#each model.firstObject.partitions as |part|}}
+            <tr>
+              <td>{{part}}</td>
+              <td>{{getFromMap map=model.firstObject.partitionMap key=part parameter="usedCapacity" }}%</td>
+              <td>&lt;{{getFromMap map=model.firstObject.partitionMap key=part parameter="effectiveMinResource.memory" }} MB,
+                    vCores:{{getFromMap map=model.firstObject.partitionMap key=part parameter="effectiveMinResource.vCores" }}&gt;</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+        {{/if}}
+     </div>
+    </div>
+  </div>
+</div>
+
+{{yield}}
